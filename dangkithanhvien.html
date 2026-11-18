@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng ký thành viên</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #e3f2fd;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            color: blue;
+            text-align: center;
+        }
+
+        .khung {
+            background-color: white;
+            width: 400px;
+            margin: auto;
+            padding: 25px;
+            border: 2px solid blue;
+            border-radius: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid gray;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .gioitinh {
+            margin-top: 10px;
+        }
+
+        .gioitinh input {
+            width: auto;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkblue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>ĐĂNG KÝ THÀNH VIÊN</h1>
+
+    <div class="khung">
+
+        <form>
+
+            <label>Họ và tên:</label>
+            <input type="text" placeholder="Nhập họ và tên">
+
+            <label>Ngày sinh:</label>
+            <input type="date">
+
+            <label>Giới tính:</label>
+
+            <div class="gioitinh">
+                <input type="radio" name="gioitinh"> Nam
+                <input type="radio" name="gioitinh"> Nữ
+            </div>
+
+            <label>Email:</label>
+            <input type="email" placeholder="Nhập email">
+
+            <label>Số điện thoại:</label>
+            <input type="tel" placeholder="Nhập số điện thoại">
+
+            <label>Mật khẩu:</label>
+            <input type="password" placeholder="Nhập mật khẩu">
+
+            <label>Xác nhận mật khẩu:</label>
+            <input type="password" placeholder="Nhập lại mật khẩu">
+
+            <button type="submit">Đăng ký</button>
+
+        </form>
+
+    </div>
+
+</body>
+</html>
