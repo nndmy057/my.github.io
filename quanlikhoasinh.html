@@ -1,0 +1,772 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản lý Khóa sinh</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* TIÊU ĐỀ */
+
+header {
+    background: linear-gradient(120deg, #2563eb, #60a5fa);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+header h1 {
+    margin: 0 0 10px;
+}
+
+header p {
+    margin: 0;
+}
+
+/* THỐNG KÊ */
+
+.statistics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px #ddd;
+}
+
+.card h3 {
+    color: #64748b;
+    font-size: 15px;
+}
+
+.card h2 {
+    color: #2563eb;
+    font-size: 28px;
+}
+
+/* CÁC KHU VỰC */
+
+.section {
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
+    margin-bottom: 22px;
+    box-shadow: 0 3px 10px #e2e8f0;
+}
+
+.section h2 {
+    color: #1e40af;
+    margin-top: 0;
+}
+
+/* FORM */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 14px;
+    margin-top: 7px;
+}
+
+input:focus, select:focus {
+    outline: 2px solid #93c5fd;
+    border-color: #2563eb;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* NÚT */
+
+button {
+    padding: 11px 17px;
+    border: none;
+    border-radius: 7px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+.edit {
+    background: #f59e0b;
+    padding: 7px 10px;
+    margin: 2px;
+}
+
+.delete {
+    background: #ef4444;
+    padding: 7px 10px;
+    margin: 2px;
+}
+
+/* BẢNG */
+
+.table-box {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    min-width: 950px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+    font-size: 14px;
+}
+
+th {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.group {
+    background: #dbeafe;
+    color: #1d4ed8;
+    padding: 6px 10px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+/* THỐNG KÊ NHÓM */
+
+.group-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.group-card {
+    background: #eff6ff;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.group-card h3 {
+    color: #2563eb;
+    font-size: 16px;
+}
+
+.group-card h2 {
+    color: #1e40af;
+}
+
+/* ĐIỆN THOẠI */
+
+@media(max-width: 750px) {
+    body {
+        padding: 10px;
+    }
+
+    .statistics {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .group-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    header {
+        padding: 20px;
+    }
+
+    .section {
+        padding: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- TIÊU ĐỀ -->
+
+<header>
+    <h1>🎓 QUẢN LÝ KHÓA SINH</h1>
+    <p>Hệ thống quản lý thông tin và phân nhóm khóa sinh</p>
+</header>
+
+<!-- THỐNG KÊ TỔNG QUAN -->
+
+<div class="statistics">
+
+    <div class="card">
+        <h3>👨‍🎓 Tổng khóa sinh</h3>
+        <h2 id="tongHS">0</h2>
+    </div>
+
+    <div class="card">
+        <h3>👥 Tổng số nhóm có khóa sinh</h3>
+        <h2 id="tongNhom">0</h2>
+    </div>
+
+</div>
+
+<!-- NHẬP THÔNG TIN -->
+
+<div class="section">
+
+    <h2>➕ Nhập thông tin khóa sinh</h2>
+
+    <div class="form-grid">
+
+        <div>
+            <label>Mã khóa sinh</label>
+            <input type="text" id="ma"
+            placeholder="Nhập mã khóa sinh">
+        </div>
+
+        <div>
+            <label>Họ và tên</label>
+            <input type="text" id="ten"
+            placeholder="Nhập họ và tên">
+        </div>
+
+        <div>
+            <label>Ngày sinh</label>
+            <input type="date" id="ngaysinh">
+        </div>
+
+        <div>
+            <label>Giới tính</label>
+            <select id="gioitinh">
+                <option value="">Chọn giới tính</option>
+                <option>Nam</option>
+                <option>Nữ</option>
+                <option>Khác</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Số điện thoại phụ huynh</label>
+            <input type="tel" id="sdtph"
+            placeholder="Nhập số điện thoại phụ huynh">
+        </div>
+
+        <div>
+            <label>Số điện thoại khóa sinh</label>
+            <input type="tel" id="sdt"
+            placeholder="Nhập số điện thoại">
+        </div>
+
+        <div>
+            <label>Nhóm khóa sinh</label>
+            <select id="nhom">
+                <option value="">Chọn nhóm</option>
+                <option>Nhóm 1</option>
+                <option>Nhóm 2</option>
+                <option>Nhóm 3</option>
+                <option>Nhóm 4</option>
+                <option>Nhóm 5</option>
+            </select>
+        </div>
+
+    </div>
+
+    <button onclick="luuHocSinh()" id="btnLuu">
+        Thêm khóa sinh
+    </button>
+
+    <button onclick="lamMoi()" style="background:#64748b">
+        Làm mới
+    </button>
+
+</div>
+
+<!-- TÌM KIẾM -->
+
+<div class="section">
+
+    <h2>🔍 Tìm kiếm khóa sinh</h2>
+
+    <input
+        type="text"
+        id="timkiem"
+        placeholder="Nhập mã, tên, số điện thoại hoặc nhóm..."
+        oninput="hienThi()"
+    >
+
+    <div class="table-box">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Mã KS</th>
+                    <th>Họ và tên</th>
+                    <th>Ngày sinh</th>
+                    <th>Giới tính</th>
+                    <th>SĐT phụ huynh</th>
+                    <th>SĐT khóa sinh</th>
+                    <th>Nhóm</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+
+            <tbody id="danhSach"></tbody>
+
+        </table>
+
+    </div>
+
+    <p id="ketQua" style="color:#64748b"></p>
+
+</div>
+
+<!-- THỐNG KÊ TỪNG NHÓM -->
+
+<div class="section">
+
+    <h2>📊 Thống kê khóa sinh theo nhóm</h2>
+
+    <div class="group-list" id="thongKeNhom"></div>
+
+</div>
+
+</div>
+
+<script>
+
+// LẤY DỮ LIỆU ĐÃ LƯU
+
+let hocSinh = [];
+
+try {
+    hocSinh = JSON.parse(
+        localStorage.getItem("danhSachHocSinh")
+    ) || [];
+} catch (e) {
+    hocSinh = [];
+}
+
+// DANH SÁCH NHÓM
+
+let cacNhom = [
+    "Nhóm 1",
+    "Nhóm 2",
+    "Nhóm 3",
+    "Nhóm 4",
+    "Nhóm 5"
+];
+
+// VỊ TRÍ ĐANG SỬA
+
+let viTriSua = -1;
+
+
+// LƯU DỮ LIỆU
+
+function luuDuLieu() {
+
+    localStorage.setItem(
+        "danhSachHocSinh",
+        JSON.stringify(hocSinh)
+    );
+
+}
+
+
+// TRÁNH HIỂN THỊ NỘI DUNG HTML NHẬP VÀO
+
+function anKyTuHTML(chuoi) {
+
+    return String(chuoi ?? "").replace(
+        /[&<>"']/g,
+        function (kyTu) {
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            }[kyTu];
+        }
+    );
+
+}
+
+
+// THÊM VÀ CHỈNH SỬA KHÓA SINH
+
+function luuHocSinh() {
+
+    let ma = document.getElementById("ma").value.trim();
+    let ten = document.getElementById("ten").value.trim();
+
+    let ngaysinh = document.getElementById("ngaysinh").value;
+
+    let gioitinh = document.getElementById("gioitinh").value;
+
+    let sdtph = document.getElementById("sdtph").value.trim();
+
+    let sdt = document.getElementById("sdt").value.trim();
+
+    let nhom = document.getElementById("nhom").value;
+
+
+    // KIỂM TRA THÔNG TIN
+
+    if (!ma || !ten || !nhom) {
+
+        alert("Vui lòng nhập mã, họ tên và chọn nhóm!");
+
+        return;
+    }
+
+
+    // KIỂM TRA MÃ TRÙNG
+
+    let trung = hocSinh.some((hs, index) =>
+
+        hs.ma.toLowerCase() === ma.toLowerCase()
+        && index !== viTriSua
+
+    );
+
+    if (trung) {
+
+        alert("Mã khóa sinh đã tồn tại!");
+
+        return;
+    }
+
+
+    // TẠO ĐỐI TƯỢNG KHÓA SINH
+
+    let hs = {
+
+        ma: ma,
+        ten: ten,
+        ngaysinh: ngaysinh,
+        gioitinh: gioitinh,
+        sdtph: sdtph,
+        sdt: sdt,
+        nhom: nhom
+
+    };
+
+
+    // THÊM HOẶC CẬP NHẬT
+
+    if (viTriSua === -1) {
+
+        hocSinh.push(hs);
+
+        alert("Thêm khóa sinh thành công!");
+
+    } else {
+
+        hocSinh[viTriSua] = hs;
+
+        alert("Cập nhật thông tin thành công!");
+
+    }
+
+
+    luuDuLieu();
+
+    lamMoi();
+
+    hienThi();
+
+}
+
+
+// HIỂN THỊ DANH SÁCH
+
+function hienThi() {
+
+    let tuKhoa = document.getElementById("timkiem")
+        .value.toLowerCase().trim();
+
+    let bang = document.getElementById("danhSach");
+
+    bang.innerHTML = "";
+
+
+    // LỌC DỮ LIỆU
+
+    let ds = hocSinh.filter(hs => {
+
+        return [
+
+            hs.ma,
+            hs.ten,
+            hs.ngaysinh,
+            hs.gioitinh,
+            hs.sdtph,
+            hs.sdt,
+            hs.nhom
+
+        ].some(thongTin =>
+            String(thongTin || "")
+                .toLowerCase()
+                .includes(tuKhoa)
+        );
+
+    });
+
+
+    // HIỂN THỊ TỪNG KHÓA SINH
+
+    ds.forEach((hs, index) => {
+
+        let viTri = hocSinh.indexOf(hs);
+
+        bang.innerHTML += `
+
+        <tr>
+
+            <td>${index + 1}</td>
+
+            <td>${anKyTuHTML(hs.ma)}</td>
+
+            <td>${anKyTuHTML(hs.ten)}</td>
+
+            <td>${anKyTuHTML(hs.ngaysinh || "")}</td>
+
+            <td>${anKyTuHTML(hs.gioitinh || "")}</td>
+
+            <td>${anKyTuHTML(hs.sdtph || "")}</td>
+
+            <td>${anKyTuHTML(hs.sdt || "")}</td>
+
+            <td>
+                <span class="group">
+                    ${anKyTuHTML(hs.nhom)}
+                </span>
+            </td>
+
+            <td>
+
+                <button class="edit"
+                onclick="suaHocSinh(${viTri})">
+                    Sửa
+                </button>
+
+                <button class="delete"
+                onclick="xoaHocSinh(${viTri})">
+                    Xóa
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+
+    // THÔNG BÁO KẾT QUẢ
+
+    document.getElementById("ketQua").innerText =
+        "Tìm thấy " + ds.length + " khóa sinh";
+
+
+    thongKe();
+
+}
+
+
+// SỬA KHÓA SINH
+
+function suaHocSinh(index) {
+
+    let hs = hocSinh[index];
+
+    if (!hs) return;
+
+
+    document.getElementById("ma").value = hs.ma;
+
+    document.getElementById("ten").value = hs.ten;
+
+    document.getElementById("ngaysinh").value = hs.ngaysinh || "";
+
+    document.getElementById("gioitinh").value = hs.gioitinh || "";
+
+    document.getElementById("sdtph").value = hs.sdtph || "";
+
+    document.getElementById("sdt").value = hs.sdt || "";
+
+    document.getElementById("nhom").value = hs.nhom;
+
+
+    viTriSua = index;
+
+
+    document.getElementById("btnLuu").innerText =
+        "Cập nhật khóa sinh";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+// XÓA KHÓA SINH
+
+function xoaHocSinh(index) {
+
+    if (confirm("Bạn có chắc muốn xóa khóa sinh này?")) {
+
+        hocSinh.splice(index, 1);
+
+        luuDuLieu();
+
+        lamMoi();
+
+        hienThi();
+
+        alert("Đã xóa khóa sinh!");
+
+    }
+
+}
+
+
+// LÀM MỚI FORM
+
+function lamMoi() {
+
+    document.getElementById("ma").value = "";
+
+    document.getElementById("ten").value = "";
+
+    document.getElementById("ngaysinh").value = "";
+
+    document.getElementById("gioitinh").value = "";
+
+    document.getElementById("sdtph").value = "";
+
+    document.getElementById("sdt").value = "";
+
+    document.getElementById("nhom").value = "";
+
+
+    viTriSua = -1;
+
+
+    document.getElementById("btnLuu").innerText =
+        "Thêm khóa sinh";
+
+}
+
+
+// THỐNG KÊ
+
+function thongKe() {
+
+    // TỔNG KHÓA SINH
+
+    document.getElementById("tongHS").innerText =
+        hocSinh.length;
+
+
+    // TỔNG NHÓM CÓ KHÓA SINH
+
+    let soNhom = new Set(
+        hocSinh.map(hs => hs.nhom)
+    ).size;
+
+    document.getElementById("tongNhom").innerText =
+        soNhom;
+
+
+    // THỐNG KÊ TỪNG NHÓM
+
+    let html = "";
+
+    cacNhom.forEach(nhom => {
+
+        let dem = hocSinh.filter(
+            hs => hs.nhom === nhom
+        ).length;
+
+
+        html += `
+
+        <div class="group-card">
+
+            <h3>${nhom}</h3>
+
+            <h2>${dem}</h2>
+
+            <p>Khóa sinh</p>
+
+        </div>
+
+        `;
+
+    });
+
+
+    document.getElementById("thongKeNhom").innerHTML =
+        html;
+
+}
+
+
+// CHẠY WEBSITE KHI MỞ TRANG
+
+hienThi();
+
+</script>
+
+</body>
+</html>
